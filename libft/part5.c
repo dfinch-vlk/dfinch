@@ -1,3 +1,8 @@
+#include <stdlib.h>
+#include <unistd.h>
+
+int	ft_strlen(char *str);
+
 void	ft_bzero(char *str, int len)
 {
 	int	i;
@@ -44,7 +49,7 @@ void	ft_putchar_fd(char c, int fd)
 	write(fd, &c, 1);
 }
 
-char	*ft_substr(char const *s, unsigned int start, int len)
+char	*ft_substr(char *s, unsigned int start, int len)
 {
 	char	*result;
 	int		count;

@@ -2,20 +2,7 @@
 
 int		ft_strlen(char *s);
 
-char	*ft_substr(char const *s, unsigned int start, int len)
-{
-	char	*result;
-	int		count;
-
-	count = 0;
-	result = malloc(sizeof(char) * (ft_strlen(s) - start) + 1);
-	while (count != len)
-		result[count++] = s[start++];
-	result[count] = 0;
-	return (result);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*result;
 	int		count;
@@ -34,7 +21,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (result);
 }
 
-void	**ft_memory_split(const char *str, char **result, char c)
+void	ft_memory_split(char *str, char **result, char c)
 {
 	int	count;
 	int	i;
@@ -47,7 +34,7 @@ void	**ft_memory_split(const char *str, char **result, char c)
 	{
 		if (str[i] == c || str[i + 1] == '\0')
 		{
-			result[q] = (char **)malloc(sizeof(char) * (i - count) + 1);
+			result[q] = *(char **)malloc(sizeof(char) * (i - count) + 1);
 			count = i;
 			q++;
 		}
@@ -55,10 +42,12 @@ void	**ft_memory_split(const char *str, char **result, char c)
 	}
 }
 
-void	ft_split_dop(char *str, int row, int count, char **result)
+void	ft_split_dop(char *str, int count, char **result, int c)
 {
 	int	i;
+	int	row;
 
+	row = 0;
 	i = 0;
 	while (str[i])
 	{
@@ -75,24 +64,23 @@ void	ft_split_dop(char *str, int row, int count, char **result)
 	result[row][count] = 0;
 }
 
-char	**ft_split(char const *str, char c)
+char	**ft_split(char *str, char c)
 {
 	char	**result;
 	int		count;
-	int		row;
 	int		i;
 
 	i = 0;
 	count = 0;
-	row = 0;
 	while (str[i])
 	{
 		if (str[i] == c)
 			count++;
 		i++;
 	}
-	result = (char *)malloc(sizeof(char *) * (count + 1));
+	result = (char **)malloc(sizeof(char *) * (count + 1));
 	count = 0;
 	ft_memory_split(str, result, c);
+	ft_split_dop(str, count, result, c);
 	return (result);
 }
