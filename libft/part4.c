@@ -26,33 +26,45 @@ int	ft_memcmp(char *str1, char *str2, int len)
 	return (0);
 }
 
-void	*ft_memmove(char *first, char *second, int len)
+void	ft_memmove(char *first, char *second, int len)
 {
 	char	str[len];
 	int		i;
 
 	i = 0;
 	while (i < len)
-		str[i] = second[i++];
+	{
+		str[i] = second[i];
+		i++;
+	}
 	i = 0;
 	while (i < len)
-		first[i] = str[i++];
+	{
+		first[i] = str[i];
+		i++;
+	}
 }
 
-void	*ft_memcpy(char *first, char *second, int len)
+void	ft_memcpy(char *first, char *second, int len)
 {
 	int	i;
 
 	i = 0;
 	while (i < len)
-		first[i] = second[i++];
+	{
+		first[i] = second[i];
+		i++;
+	}
 }
 
-void	*ft_memccpy(char *first, char *second, int symbol, int len)
+void	ft_memccpy(char *first, char *second, int symbol, int len)
 {
 	int	i;
 
 	i = 0;
 	while (i < len || second[i] != symbol)
-		first[i] = second[i++];
+	{
+		first[i] = second[i];
+		i++;
+	}
 }

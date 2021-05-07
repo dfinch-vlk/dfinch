@@ -1,4 +1,4 @@
-void	*ft_bzero(char *str, int len)
+void	ft_bzero(char *str, int len)
 {
 	int	i;
 
@@ -36,5 +36,23 @@ int	ft_atoi(char *str)
 	}
 	if (str[0] == '-')
 		return (result * -1);
+	return (result);
+}
+
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
+
+char	*ft_substr(char const *s, unsigned int start, int len)
+{
+	char	*result;
+	int		count;
+
+	count = 0;
+	result = malloc(sizeof(char) * (ft_strlen(s) - start) + 1);
+	while (count != len)
+		result[count++] = s[start++];
+	result[count] = 0;
 	return (result);
 }

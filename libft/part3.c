@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 int	ft_strlen(char *str)
 {
 	int	count;
@@ -5,7 +7,7 @@ int	ft_strlen(char *str)
 	count = 0;
 	while (str[count])
 		count++;
-	return (--count);
+	return (count);
 }
 
 int	ft_strncmp(const char *str1, const char *str2, int len)
@@ -15,13 +17,14 @@ int	ft_strncmp(const char *str1, const char *str2, int len)
 	i = 0;
 	while (i < len || str1[i])
 	{
-		if (str1[i] != str2[i++])
+		if (str1[i] != str2[i])
 		{
 			if (str1[i] > str2[i])
 				return (1);
 			else
 				return (-1);
 		}
+		i++;
 	}
 	return (0);
 }
@@ -55,7 +58,7 @@ char	*ft_strchr(char *str, int symbol)
 	return (result);
 }
 
-void	*ft_memset(char *str, int symbol, int len)
+void	ft_memset(char *str, int symbol, int len)
 {
 	int	i;
 

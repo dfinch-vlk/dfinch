@@ -1,3 +1,18 @@
+#include <unistd.h>
+#include <stdlib.h>
+
+void	ft_itoa_dop(int *array, char *result, int number)
+{
+	if (array[2] == 1)
+		result[0] = '-';
+	result[array[0] + 1] = 0;
+	while (array[0] != array[2] - 1)
+	{
+		result[array[0]--] = number % 10 + 48;
+		number = (number - number % 10) / 10;
+	}
+}
+
 char	*ft_itoa(int number)
 {
 	char	*result;
@@ -16,22 +31,11 @@ char	*ft_itoa(int number)
 		array[1] *= 10;
 		array[0]++;
 	}
+	array[0]--;
 	result = malloc(array[0] + array[2] + 2);
 	array[0] += array[2];
-	if (array[2] == 1)
-		result[0] = '-';
-	result[array[0] + 1] = 0;
-	while (array[0] != array[2] - 1)
-	{
-		result[array[0]--] = number % 10 + 48;
-		number = (number - number % 10) / 10;
-	}
+	ft_itoa_dop(array, result, number);
 	return (result);
-}
-
-void	ft_putchar_fd(char c, int fd)
-{
-	write(fd, &c, 1);
 }
 
 void	ft_putstr_fd(char *s, int fd)
