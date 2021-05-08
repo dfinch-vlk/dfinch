@@ -26,25 +26,6 @@ int	ft_memcmp(char *str1, char *str2, int len)
 	return (0);
 }
 
-void	ft_memmove(char *first, char *second, int len)
-{
-	char	str[len];
-	int		i;
-
-	i = 0;
-	while (i < len)
-	{
-		str[i] = second[i];
-		i++;
-	}
-	i = 0;
-	while (i < len)
-	{
-		first[i] = str[i];
-		i++;
-	}
-}
-
 void	ft_memcpy(char *first, char *second, int len)
 {
 	int	i;

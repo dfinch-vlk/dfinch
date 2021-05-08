@@ -1,6 +1,17 @@
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "libft.h"
+
+char *test_calloc()
+{
+	int *arr = calloc(sizeof(int), 10);
+	int	*arr1 = (int *)ft_calloc(sizeof(int), 10);
+	for (int i = 0; i < 10; i++)
+		if (arr[i] != arr1[i])
+			return ("Fail");
+	return ("Success");
+}
 
 char *test_memcpy()
 {
@@ -26,5 +37,6 @@ int main()
 {
 	printf("memset: %s\n", test_memset());
 	printf("memcpy: %s\n", test_memcpy());
+	printf("calloc: %s\n", test_calloc());
 	return 0;
 }
