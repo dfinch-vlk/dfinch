@@ -1,24 +1,34 @@
-all: libft.a
 
-libft.a: part1.o part2.o part3.o part4.o part5.o part6.o part7.o part8.o
-	ar r libft.a *.o
-part1.o: part1.c
-	gcc -c part1.c
-part2.o: part2.c
-	gcc -c part2.c
-part3.o: part3.c
-	gcc -c part3.c
-part4.o: part4.c
-	gcc -c part4.c
-part5.o: part5.c
-	gcc -c part5.c
-part6.o: part6.c
-	gcc -c part6.c
-part7.o: part7.c
-	gcc -c part7.c
-part8.o: part8.c
-	gcc -c part8.c
+.PHONY:  all clean fclean re
+
+NAME=libft.a
+
+SRCS =	ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c ft_isascii.c\
+		ft_isdigit.c ft_isprint.c ft_itoa.c ft_memccpy.c ft_memchr.c ft_memcmp.c\
+		ft_memcpy.c ft_memmove.c ft_memset.c ft_putchar_fd.c ft_putendl_fd.c\
+		ft_putnbr_fd.c ft_putstr_fd.c ft_split.c ft_strchr.c ft_strdup.c\
+		ft_strjoin.c ft_strlcat.c ft_strlcpy.c ft_strlen.c ft_substr.c\
+		ft_strncmp.c ft_strrchr.c ft_substr.c ft_strjoin.c ft_strtrim.c\
+		ft_tolower.c ft_toupper.c ft_strnstr.c ft_split.c ft_strmapi.c
+
+OBJ	 = 	$(SRCS:.c=.o)
+
+INCLUDES=./
+
+FLAGS = -Wall -Wextra -Werror -c
+
+%.o: %.c 
+	@gcc $(FLAGS) $< -o $@
+	
+all: $(NAME)
+
+$(NAME): $(OBJ)
+	@ar rcs $(NAME) $(OBJ)
+	
 clean:
-	rm -rf *.o
-fclean:
-	rm -rf libft.a
+	@rm -f $(OBJ)
+
+fclean: clean
+	@rm -f $(NAME)
+	
+re: fclean all
