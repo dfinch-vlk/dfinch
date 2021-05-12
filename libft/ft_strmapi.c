@@ -7,6 +7,10 @@ char	*ft_strmapi(char *s, char (*f)(unsigned int, char))
 
 	i = 0;
 	result = malloc((int)ft_strlen((char *)s) + 1);
+	if (s == NULL)
+		return (NULL);
+	if (result == NULL)
+		return (NULL);
 	if (s == NULL || result == NULL)
 		return (0);
 	while (s[i])

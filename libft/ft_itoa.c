@@ -1,4 +1,10 @@
 #include "libft.h"
+int	checkMinusMemory(int n)
+{
+	if (n < 0)
+		return (1);
+	return (0);
+}
 
 unsigned int	get_size(long n)
 {
@@ -26,7 +32,7 @@ char	*ft_itoa(int n)
 
 	i = 0;
 	size = get_size(n);
-	str = (char *)malloc(sizeof(char) * (size + 1 + 1));
+	str = (char *)malloc(sizeof(char) * (size + checkMinusMemory(n) + 1));
 	nb = n;
 	if (n < 0)
 	{

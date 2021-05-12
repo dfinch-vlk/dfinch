@@ -7,6 +7,8 @@ char	*ft_calloc(int first, int second)
 
 	count = 0;
 	result = malloc(first * second);
+	if (result == NULL)
+		return (NULL);
 	while (count < (first * second))
 	{
 		result[count] = 0;

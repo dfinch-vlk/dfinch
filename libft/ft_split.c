@@ -57,7 +57,11 @@ char	**ft_split(char const *s, char c)
 
 	i = 0;
 	j = 0;
+	if (s == NULL)
+		return (NULL);
 	spt = (char **)malloc(sizeof(char *) * (ft_cr(s, c) + 1));
+	if (spt == NULL)
+		return (NULL);
 	while (*s)
 	{
 		while (*s == c && *s)
