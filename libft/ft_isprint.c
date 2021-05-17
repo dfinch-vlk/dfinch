@@ -1,8 +1,8 @@
 #include "libft.h"
 
-int	ft_isprint(int symbol)
+int	ft_isprint(int c)
 {
-	if (32 <= symbol && symbol <= 126)
+	if (32 <= c && c <= 126)
 		return (16384);
 	return (0);
 }

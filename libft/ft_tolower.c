@@ -1,8 +1,8 @@
 #include "libft.h"
 
-int	ft_tolower(int symbol)
+int	ft_tolower(int c)
 {
-	if (symbol >= 65 && symbol <= 90)
-		return (symbol + 32);
-	return (symbol);
+	if (c >= 65 && c <= 90)
+		return (c + 32);
+	return (c);
 }

@@ -1,10 +1,8 @@
 #include "libft.h"
 
-int	ft_isalnum(int symbol)
+int	ft_isalnum(int c)
 {
-	if (48 <= symbol && symbol <= 57)
-		return (8);
-	if ((symbol >= 65 && symbol <= 90) || (symbol >= 97 && symbol <= 122))
-		return (8);
+	if (ft_isalpha(c) || ft_isdigit(c))
+		return (1);
 	return (0);
 }

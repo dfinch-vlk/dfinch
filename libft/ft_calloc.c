@@ -1,18 +1,12 @@
 #include "libft.h"
 
-char	*ft_calloc(int first, int second)
+void	*ft_calloc(size_t count, size_t size)
 {
-	char	*result;
-	int		count;
+	unsigned char	*mem;
 
-	count = 0;
-	result = malloc(first * second);
-	if (result == NULL)
+	mem = malloc(count * size);
+	if (!mem)
 		return (NULL);
-	while (count < (first * second))
-	{
-		result[count] = 0;
-		count++;
-	}
-	return (result);
+	ft_memset(mem, 0, count * size);
+	return ((void *)mem);
 }

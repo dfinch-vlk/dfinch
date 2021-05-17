@@ -49,19 +49,13 @@ void	*is_free(char **spt)
 	return (NULL);
 }
 
-char	**ft_split(char const *s, char c)
+int	ft_split_dop(const char *s, char **spt, char c)
 {
-	int		i;
-	int		j;
-	char	**spt;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
-	if (s == NULL)
-		return (NULL);
-	spt = (char **)malloc(sizeof(char *) * (ft_cr(s, c) + 1));
-	if (spt == NULL)
-		return (NULL);
 	while (*s)
 	{
 		while (*s == c && *s)
@@ -70,7 +64,7 @@ char	**ft_split(char const *s, char c)
 		{
 			spt[j] = (char *)malloc(sizeof(char) * (ft_cl(s, c) + 1));
 			if (spt[j] == NULL)
-				return (is_free(spt));
+				return (0);
 			while (*s && *s != c)
 				spt[j][i++] = (char)*s++;
 			spt[j][i] = '\0';
@@ -79,5 +73,19 @@ char	**ft_split(char const *s, char c)
 		}
 	}
 	spt[j] = NULL;
+	return (1);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char	**spt;
+
+	if (s == NULL)
+		return (NULL);
+	spt = (char **)malloc(sizeof(char *) * (ft_cr(s, c) + 1));
+	if (spt == NULL)
+		return (NULL);
+	if (ft_split_dop(s, spt, c) == 0)
+		return (is_free(spt));
 	return (spt);
 }

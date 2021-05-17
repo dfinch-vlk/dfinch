@@ -1,8 +1,8 @@
 #include "libft.h"
 
-int	ft_strlcpy(char *dst, const char *src, int dstsize)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	if (!dst || !src)
@@ -10,7 +10,7 @@ int	ft_strlcpy(char *dst, const char *src, int dstsize)
 	if (dstsize > 0)
 	{
 		dstsize--;
-		while (src[i] && dstsize)
+		while (src[i] && dstsize - 1)
 		{
 			dst[i] = src[i];
 			i++;
@@ -20,5 +20,4 @@ int	ft_strlcpy(char *dst, const char *src, int dstsize)
 	}
 	while (src[i])
 		i++;
-	return (i);
-}
+	return (i) 

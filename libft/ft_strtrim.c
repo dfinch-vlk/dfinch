@@ -1,6 +1,6 @@
 #include "libft.h"
 
-char	*ft_strncpy(char *dest, const char *src, size_t n)
+char	*ft_strtrim_dop(char *dest, const char *src, size_t n)
 {
 	size_t	i;
 
@@ -18,7 +18,7 @@ char	*ft_strncpy(char *dest, const char *src, size_t n)
 	return (dest);
 }
 
-char	*ft_strtrim(char *s1, char *set)
+char	*ft_strtrim(const char *s1, const char *set)
 {
 	int		start;
 	int		end;
@@ -37,7 +37,7 @@ char	*ft_strtrim(char *s1, char *set)
 	trim = malloc(sizeof(char) * end + 1);
 	if (trim == NULL)
 		return (NULL);
-	ft_strncpy(trim, s1 + start, end);
+	ft_strtrim_dop(trim, s1 + start, end);
 	trim[end] = '\0';
 	return (trim);
 }

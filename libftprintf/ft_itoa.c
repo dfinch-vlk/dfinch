@@ -1,4 +1,4 @@
-#include "libft.h"
+#include "libftprintf.h"
 
 int	checkMinusMemory(int n)
 {

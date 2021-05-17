@@ -1,8 +1,8 @@
 #include "libft.h"
 
-int	ft_toupper(int symbol)
+int	ft_toupper(int c)
 {
-	if (symbol >= 97 && symbol <= 122)
-		return (symbol - 32);
-	return (symbol);
+	if (c >= 97 && c <= 122)
+		return (c - 32);
+	return (c);
 }
