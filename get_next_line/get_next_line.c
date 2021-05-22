@@ -1,131 +1,131 @@
-#include <io.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdio.h>
 
-int	countLine(char *str, int flag, int count)
+int countStr(char *str, int countLine, int flag)
 {
-	int i;
-	static int result;
+	int line;
+	int count1;
+	int count2;
 
-	result = 0;
-	i = 0;
-	while (i < 30 && str[i])
+	line = 0;
+	count1 = 0;
+	count2 = 0;
+	if (countLine == 0 && flag == 1)
+		return (countLine);
+	while (str[count1])
 	{
-		if (str[i] == '\n')
-		{
-			result++;
-			if (flag == 0)
-				return (i);
-			if (flag == 4 && result == count)
-				return (i);
-		}
-		i++;
+		if (str[count1] == '\n')
+			line++;
+		if (countLine - line == 1)
+			count2++;
+		if (line == countLine && flag == 2)
+			return (count2);
+		if (line == countLine && flag == 3)
+			return (count1);
+		count1++;
 	}
+	if (line == countLine && flag == 2)
+			return (count2);
+	if (line == countLine && flag == 3)
+			return (count1);
+	return (line);
+}
+
+int	write_main(char *str, char **line, int countLine, int flag)
+{
+	int count1;
+	int	count2;
+
+	count1 = 0;
 	if (flag == 1)
-		return (result);
-	return (i);
-}
-
-int	get_next_line_dop(char *str, char **line, static int count_line)
-{
-	int i;
-	int q;
-	int count;
-
-	i = 0;
-	q = 0;
-	count = 0;
-	line = malloc(sizeof(char *) * count_line);
-	if (!line)
-		return (0);
-	while (count < count_line)
 	{
-		line[count] = malloc(sizeof(char) * countLine(str, 0, count++) + 1);
-		if (!line[count - 1])
-			return (0);
+		if (countLine == 0)
+			count2 = 0;
+		else
+			count2 = countStr(str, countLine, 3) + 1;
+		while (str[count2] != 0 && str[count2] != '\n')
+			line[0][count1++] = str[count2++];
+		line[0][count1] = 0;
 	}
-	while (q < count_line)
+	if (flag == 2)
 	{
-		count = 0;
-		while (str[i] == '\n')
-			len[q][count++] = str[i++]
-		len[q][count] = 0;
-		i++;
-		q++;
+		if (countLine == 0)
+			return (0);
+		count1 = 0;
+		while(str[count1])
+			count1++;
+		return (count1);
 	}
 	return (1);
 }
 
-int	first_get_next_line(char **arr, char **line, char *buf)
+void	write_dop(char *new, char *pred, char *buf, int countLine)
 {
-	int count;
+	int count1;
+	int count2;
 
-	count = 0;
-	line = malloc(sizeof(char *));
-	if (!line)
-		return (0)
-	arr[0] == malloc(sizeof(char) * countLine(buf, 2, 0) + 1);
-	if (arr[0])
-		return (0);
-	line[0] = malloc(sizeof(char) * countLine(buf, 0, 0) + 1);
-	if (!line[0])
-		return (0);
-	while (count < countLine(buf, 2))
-		line[0][count] = buf[count++];
-	line[0][count] = 0;
-	return (1);
+	count1 = 0;
+	count2 = 0;
+	if (countLine != 0)
+	{
+		while (pred[count1])
+		{
+			new[count1] = pred[count1];
+			count1++;
+		}
+	}
+	while (buf[count2])
+		new[count1++] = buf[count2++];
+	new[count1] = 0;
 }
 
-int	get_next_line_memory(char **arr, char **line, static int count_line, char *buf)
+int	memory(char **line, char **results, char *buf, int countLine)
 {
-	int count;
-	int	i;
+	int second;
 
-	i = 0;
-	count = 0;
-		return (0);
-	if (count_line % 2 == 0)
-	{
-		arr[1] == malloc(sizeof(char) * (ft_strlen(arr[0]) + count_line(buf, 2, 0) + 1));
-		if (!arr[1])
-			return (0);
-		while (arr[0][i])
-			arr[1][count] = arr[0][count++];
-		while (i < 30)
-			arr[1][count++] = buf[i++];
-		if (get_next_line_dop(arr[1], line, count_line) == 0)
-			return (0);
-		free(arr[0]);
-		return (1);
-	}
-	arr[0] == malloc(sizeof(char) * (ft_strlen(arr[0]) + count_line(buf, 2, 0) + 1));
-	if (!arr[0])
-		return (0);
-	while (arr[1][i])
-		arr[0][count] = arr[1][count++];
-	while (i < 30)
-		arr[0][count++] = buf[i++];
-	if (get_next_line_dop(arr[0], line, count_line) == 0)
-		return (0);
-	free(arr[1]);
+	if (countLine % 2 == 1)
+		second = 0;
+	else
+		second = 1;
+	results[countLine % 2] = malloc(sizeof(char) * (write_main(results[second], 0, countLine, 2) + write_main(buf, 0, 1, 2) + 1));
+	if (!results[countLine % 2])
+		return (-1);
+	write_dop(results[countLine % 2], results[second], buf, countLine);
+	free(results[second]);
+	line[0] = malloc(sizeof(char) * countStr(results[countLine % 2], countLine, 2));
+	if (!line)
+		return (-1);
+	write_main(results[countLine % 2], line, countLine, 1);
 	return (1);
 }
 
 int	get_next_line(int fd, char **line)
 {
-	char			buf[30];
-	char			*arr[2];
-	static int		count_line;
-	int				count;
+	static int countLine;
+	static char *results[2];
+	char		buf[BUFFER_SIZE + 1];
 
-	count_line = 1;
-	count = 0;
-	if(!read(fd, buf, 30) || count_line < countLine(buf, 1, 0))
-		return (0);
-	if (count_line == 1)
-	{
-		count_line += first_get_next_line(arr, line, buf);
-	}
-	if (get_next_line_memory(arr, line, count_line, buf) == 0);
-		return (2);
-	count_line++;
+	buf[BUFFER_SIZE] = 0;
+	read(fd, buf, BUFFER_SIZE);
+	if (memory(line, results, buf, countLine) == -1)
+		return (-1);
+	if (countLine == 11)
+		printf("%s\n", results[countLine % 2]);
+	countLine++;
 	return (1);
+}
+
+int	main()
+{
+	int fd = open("text", O_RDONLY);
+	char	*line;
+	for (int i = 0; i < 12; ++i)
+	{
+		get_next_line(fd, &line);
+		//printf("%s\n", line);
+	}
 }
