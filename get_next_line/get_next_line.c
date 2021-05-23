@@ -4,128 +4,134 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <stddef.h>
 
-int countStr(char *str, int countLine, int flag)
+int ft_strlen(char *str)
 {
-	int line;
+	int count;
+
+	count = 0;
+	if (str == NULL)
+		return (0);
+	while (str[count])
+		count++;
+	return (count);
+}
+
+char	*ft_strdup(char *s1)
+{
+	int		count;
+	char	*result;
+
+	count = -1;
+	result = malloc(ft_strlen(s1) + 1);
+	if (result == NULL)
+		return (NULL);
+	while (s1[++count])
+		result[count] = s1[count];
+	result[count] = '\0';
+	return (result);
+}
+
+void	writing(char **line, char *pred, char *ost)
+{
 	int count1;
 	int count2;
 
-	line = 0;
 	count1 = 0;
 	count2 = 0;
-	if (countLine == 0 && flag == 1)
-		return (countLine);
-	while (str[count1])
+	while (pred[count1] != 0 && pred[count1] != '\n')
 	{
-		if (str[count1] == '\n')
-			line++;
-		if (countLine - line == 1)
-			count2++;
-		if (line == countLine && flag == 2)
-			return (count2);
-		if (line == countLine && flag == 3)
-			return (count1);
+		line[0][count1] = pred[count1];
 		count1++;
 	}
-	if (line == countLine && flag == 2)
-			return (count2);
-	if (line == countLine && flag == 3)
-			return (count1);
-	return (line);
+	line[0][count1] = 0;
+	while (pred[count1] != 0)
+		ost[count2++] = pred[count1++];
+	ost[count2] = 0;
+	free(pred);
+	pred = ft_strdup(ost);
+	free(ost);
 }
 
-int	write_main(char *str, char **line, int countLine, int flag)
+int	ft_strnchr(char *str, char c)
 {
-	int count1;
-	int	count2;
+	int count;
 
-	count1 = 0;
-	if (flag == 1)
-	{
-		if (countLine == 0)
-			count2 = 0;
-		else
-			count2 = countStr(str, countLine, 3) + 1;
-		while (str[count2] != 0 && str[count2] != '\n')
-			line[0][count1++] = str[count2++];
-		line[0][count1] = 0;
-	}
-	if (flag == 2)
-	{
-		if (countLine == 0)
-			return (0);
-		count1 = 0;
-		while(str[count1])
-			count1++;
-		return (count1);
-	}
-	return (1);
+	count = 0;
+	while (str[count] != 0)
+		if (str[count++] == c)
+			return (--count);
+	return (-1);
 }
 
-void	write_dop(char *new, char *pred, char *buf, int countLine)
+char	*write_pred(char *pred, char *buf)
 {
-	int count1;
-	int count2;
+	char	*rew;
+	int		count1;
+	int		count2;
 
 	count1 = 0;
 	count2 = 0;
-	if (countLine != 0)
+	rew = malloc(sizeof(char) * (ft_strlen(pred) + ft_strlen(buf) + 1));
+	if (!rew)
+		return(ft_strdup(""));
+	if (ft_strlen(pred) != 0)
 	{
 		while (pred[count1])
 		{
-			new[count1] = pred[count1];
+			rew[count1] = pred[count1];
 			count1++;
 		}
 	}
 	while (buf[count2])
-		new[count1++] = buf[count2++];
-	new[count1] = 0;
+		rew[count1++] = buf[count2++];
+	rew[count1] = 0;
+	return (rew);
 }
-
-int	memory(char **line, char **results, char *buf, int countLine)
+int		memory(char **line, char *pred)
 {
-	int second;
+	char *ost;
 
-	if (countLine % 2 == 1)
-		second = 0;
-	else
-		second = 1;
-	results[countLine % 2] = malloc(sizeof(char) * (write_main(results[second], 0, countLine, 2) + write_main(buf, 0, 1, 2) + 1));
-	if (!results[countLine % 2])
+	line[0]  = malloc(sizeof(char) * ft_strnchr(pred, '\n') + 2);
+	if (!line[0])
 		return (-1);
-	write_dop(results[countLine % 2], results[second], buf, countLine);
-	free(results[second]);
-	line[0] = malloc(sizeof(char) * countStr(results[countLine % 2], countLine, 2));
-	if (!line)
-		return (-1);
-	write_main(results[countLine % 2], line, countLine, 1);
+	ost = malloc(sizeof(char) * (ft_strlen(pred) - ft_strnchr(pred, '\n') + 1));
+	if (!ost)
+		return(-1);
+	writing(line, pred, ost);
 	return (1);
 }
 
 int	get_next_line(int fd, char **line)
 {
-	static int countLine;
-	static char *results[2];
+	static char *pred;
 	char		buf[BUFFER_SIZE + 1];
 
 	buf[BUFFER_SIZE] = 0;
-	read(fd, buf, BUFFER_SIZE);
-	if (memory(line, results, buf, countLine) == -1)
+	buf[0] = 0;
+	while (ft_strnchr(buf, '\n') == -1)
+	{
+		if (!read(fd, buf, BUFFER_SIZE))
+			break;
+		pred = write_pred(pred, buf);
+		if (pred[0] == 0)
+			return (-1);
+	}
+	if (!memory(line, pred))
 		return (-1);
-	if (countLine == 11)
-		printf("%s\n", results[countLine % 2]);
-	countLine++;
 	return (1);
 }
 
-int	main()
+int main()
 {
 	int fd = open("text", O_RDONLY);
-	char	*line;
-	for (int i = 0; i < 12; ++i)
+	char *line;
+
+	for (int i = 0; i < 3; i++)
 	{
 		get_next_line(fd, &line);
-		//printf("%s\n", line);
+		printf("%s\n", line);
 	}
+	return 0;
 }
