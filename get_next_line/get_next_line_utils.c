@@ -1,6 +1,20 @@
 #include "get_next_line.h"
 #include <stdio.h>
 
+void	ft_bzero(void *s, size_t n)
+{
+	size_t			i;
+	unsigned char	*str;
+
+	str = (unsigned char *)s;
+	i = 0;
+	while (i < n)
+	{
+		str[i] = '\0';
+		i++;
+	}
+}
+
 int ft_strlen(char *str)
 {
 	int count;
@@ -28,36 +42,34 @@ char	*ft_strdup(char *s1)
 	return (result);
 }
 
-char  *writing(char **line, char *pred, char *ost)
+void	writing(char **line, char **pred, char *ost)
 {
 	int count1;
 	int count2;
 
 	count1 = 0;
 	count2 = 0;
-	if (pred[0] != '\n')
+	if (pred[0][0] != '\n')
 	{
-		while (pred[count1] != 0 && pred[count1] != '\n')
+		while (pred[0][count1] != 0 && pred[0][count1] != '\n')
 		{
-			line[0][count1] = pred[count1];
+			line[0][count1] = pred[0][count1];
 			count1++;
 		}
 		line[0][count1] = 0;
 	}
-	count1++;
-	if (pred[0] == '\n')
+	if (pred[0][0] == '\n')
 	{
 		free(line[0]);
 		line[0] = ft_strdup("\n");
-		count1++;
 	}
-	while (pred[count1] != 0)
-		ost[count2++] = pred[count1++];
+	count1++;
+	while (pred[0][count1] != 0)
+		ost[count2++] = pred[0][count1++];
 	ost[count2] = 0;
-	free(pred);
-	pred = ft_strdup(ost);
+	free(pred[0]);
+	pred[0] = ft_strdup(ost);
 	free(ost);
-	return (pred);
 }
 
 int	ft_strnchr(char *str, char c)
@@ -71,7 +83,7 @@ int	ft_strnchr(char *str, char c)
 	return (-1);
 }
 
-char	*write_pred(char *pred, char *buf)
+int	write_pred(char **pred, char *buf)
 {
 	char	*rew;
 	int		count1;
@@ -79,35 +91,37 @@ char	*write_pred(char *pred, char *buf)
 
 	count1 = 0;
 	count2 = 0;
-	rew = malloc(sizeof(char) * (ft_strlen(pred) + ft_strlen(buf) + 1));
+	rew = malloc(sizeof(char) * (ft_strlen(pred[0]) + ft_strlen(buf) + 1));
 	if (!rew)
-		return(NULL);
-	if (ft_strlen(pred) != 0)
+		return(-1);
+	if (ft_strlen(pred[0]) != 0)
 	{
-		while (pred[count1])
+		while (pred[0][count1])
 		{
-			rew[count1] = pred[count1];
+			rew[count1] = pred[0][count1];
 			count1++;
 		}
 	}
 	while (buf[count2])
 		rew[count1++] = buf[count2++];
 	rew[count1] = 0;
-	return (rew);
+	pred[0] = ft_strdup(rew);
+	free(rew);
+	return (1);
 }
-int		memory(char **line, char *pred)
+int		memory(char **line, char **pred)
 {
 	char *ost;
 
-	if (ft_strnchr(pred, '\n') == -1)
-		line[0]  = malloc(sizeof(char) * ft_strnchr(pred, 0) + 1);
+	if (ft_strnchr(pred[0], '\n') == -1)
+		line[0]  = malloc(sizeof(char) * ft_strnchr(pred[0], 0) + 1);
 	else
-		line[0]  = malloc(sizeof(char) * ft_strnchr(pred, '\n') + 1);
+		line[0]  = malloc(sizeof(char) * ft_strnchr(pred[0], '\n') + 1);
 	if (!line[0])
 		return (-1);
-	ost = malloc(sizeof(char) * (ft_strlen(pred) - ft_strnchr(pred, '\n') + 1));
+	ost = malloc(sizeof(char) * (ft_strlen(pred[0]) - ft_strnchr(pred[0], '\n')));
 	if (!ost)
 		return(-1);
-	pred = writing(line, pred, ost);
+	writing(line, pred, ost);
 	return (1);
 }
