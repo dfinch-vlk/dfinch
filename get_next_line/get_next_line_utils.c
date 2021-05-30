@@ -1,33 +1,46 @@
 #include "get_next_line.h"
-#include <stdio.h>
 
-void	ft_bzero(void *s, size_t n)
+void	*ft_calloc(size_t count, size_t size)
 {
-	size_t			i;
-	unsigned char	*str;
+	char	*result;
+	size_t	i;
 
-	str = (unsigned char *)s;
 	i = 0;
-	while (i < n)
+	result = malloc(count * size);
+	if (result == NULL)
+		return (NULL);
+	while (i < (count * size))
 	{
-		str[i] = '\0';
+		result[i] = 0;
 		i++;
 	}
+	return (result);
 }
 
-int ft_strlen(char *str)
+size_t	ft_strlen(const char *s)
 {
-	int count;
+	size_t	count;
 
 	count = 0;
-	if (str == NULL)
-		return (0);
-	while (str[count])
+	while (s[count])
 		count++;
 	return (count);
 }
 
-char	*ft_strdup(char *s1)
+char	*ft_strchr(const char *s, int c)
+{
+	while (*s)
+	{
+		if (*s == (char)c)
+			return ((char *)s);
+		++s;
+	}
+	if ((char)c == '\0')
+		return ((char *)s);
+	return (0);
+}
+
+char	*ft_strdup(const char *s1)
 {
 	int		count;
 	char	*result;
@@ -42,86 +55,26 @@ char	*ft_strdup(char *s1)
 	return (result);
 }
 
-void	writing(char **line, char **pred, char *ost)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int count1;
-	int count2;
-
-	count1 = 0;
-	count2 = 0;
-	if (pred[0][0] != '\n')
-	{
-		while (pred[0][count1] != 0 && pred[0][count1] != '\n')
-		{
-			line[0][count1] = pred[0][count1];
-			count1++;
-		}
-		line[0][count1] = 0;
-	}
-	if (pred[0][0] == '\n')
-	{
-		free(line[0]);
-		line[0] = ft_strdup("\n");
-	}
-	count1++;
-	while (pred[0][count1] != 0)
-		ost[count2++] = pred[0][count1++];
-	ost[count2] = 0;
-	free(pred[0]);
-	pred[0] = ft_strdup(ost);
-	free(ost);
-}
-
-int	ft_strnchr(char *str, char c)
-{
-	int count;
+	char	*result;
+	int		count;
+	int		i;
 
 	count = 0;
-	while (str[count] != 0)
-		if (str[count++] == c)
-			return (--count);
-	return (-1);
-}
-
-int	write_pred(char **pred, char *buf)
-{
-	char	*rew;
-	int		count1;
-	int		count2;
-
-	count1 = 0;
-	count2 = 0;
-	rew = malloc(sizeof(char) * (ft_strlen(pred[0]) + ft_strlen(buf) + 1));
-	if (!rew)
-		return(-1);
-	if (ft_strlen(pred[0]) != 0)
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
+	result = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2)) + 1);
+	if (result == NULL)
+		return (NULL);
+	while (s1[count])
 	{
-		while (pred[0][count1])
-		{
-			rew[count1] = pred[0][count1];
-			count1++;
-		}
+		result[count] = s1[count];
+		count++;
 	}
-	while (buf[count2])
-		rew[count1++] = buf[count2++];
-	rew[count1] = 0;
-	pred[0] = ft_strdup(rew);
-	free(rew);
-	return (1);
-}
-int		memory(char **line, char **pred)
-{
-	char *ost;
-
-	if (ft_strnchr(pred[0], '\n') == -1)
-		line[0]  = malloc(sizeof(char) * ft_strnchr(pred[0], 0) + 1);
-	else
-		line[0]  = malloc(sizeof(char) * ft_strnchr(pred[0], '\n') + 1);
-	if (!line[0])
-		return (-1);
-	ost = malloc(sizeof(char) * (ft_strlen(pred[0]) - ft_strnchr(pred[0], '\n')));
-	if (!ost)
-		return(-1);
-	writing(line, pred, ost);
-	return (1);
+	i = 0;
+	while (s2[i])
+		result[count++] = s2[i++];
+	result[count] = 0;
+	return (result);
 }

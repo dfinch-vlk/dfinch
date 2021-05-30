@@ -2,21 +2,16 @@
 
 char	*ft_strrchr(const char *s, int c)
 {
-	int		count;
-	char	*lastc;
+	int		i;
 
-	lastc = NULL;
-	count = 0;
+	i = ft_strlen(s);
 	if (c == 0)
+		return ((char *)s + i);
+	while (i >= 0)
 	{
-		lastc = (char *)(s + ft_strlen(s));
-		return (lastc);
+		if (s[i] == (char)c)
+			return ((char *)s + i);
+		i--;
 	}
-	while (s[count])
-	{
-		if (s[count] == (char)c)
-			lastc = (char *)(s + count);
-		count++;
-	}
-	return (lastc);
+	return (NULL);
 }

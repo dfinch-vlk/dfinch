@@ -5,18 +5,19 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stddef.h>
-#include "get_next_line.h"
 #include <string.h>
+
+int get_next_line(int fd, char **line);
 
 int main()
 {
 	int fd = open("text", O_RDONLY);
-	char	*line;
+	char 	*line;
+	int check = 1;
 
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; check != 0; i++)
 	{
-		get_next_line(fd, &line);
-		//printf("%lu\n ", strlen(line));
+		printf("%i - ", (check =  get_next_line(fd, &line)));
 		printf("%s\n", line);
 	}
 }

@@ -1,91 +1,77 @@
 #include "libft.h"
 
-int	ft_cr(const char *str, char c)
+static int	ft_countwords(const char *s, char c)
 {
 	int	count;
+	int	words;
 
 	count = 0;
-	if (*str != c && *str)
-	{
-		str++;
+	words = 0;
+	while (s[count] == c && c)
 		count++;
-	}
-	while (*str)
+	while (s[count])
 	{
-		while (*str == c)
-		{
-			str++;
-			if (*str != c && *str)
-				count++;
-		}
-		str++;
+		while (s[count] && s[count] != c)
+			count++;
+		words++;
+		while (s[count] == c && c)
+			count++;
 	}
-	return (count);
+	return (words);
 }
 
-int	ft_cl(const char *str, char c)
+static char	**freesplit(int temp, char **strs)
+{
+	while (temp >= 0)
+	{
+		free(strs[temp]);
+		temp--;
+	}
+	free(strs);
+	return (strs);
+}
+
+char	**fillarr(const char *s, char **strs, char c)
 {
 	int	count;
+	int	temp;
+	int	start;
 
 	count = 0;
-	while (*str != c && *str)
-	{
+	temp = 0;
+	while (s[count] == c && c)
 		count++;
-		str++;
-	}
-	return (count);
-}
-
-void	*is_free(char **spt)
-{
-	int		i;
-
-	i = 0;
-	while (spt[i])
+	while (s[count])
 	{
-		free(spt[i++]);
-	}
-	free(spt);
-	return (NULL);
-}
-
-int	ft_split_dop(const char *s, char **spt, char c)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (*s)
-	{
-		while (*s == c && *s)
-			s++;
-		if (*s != c && *s)
+		start = count;
+		while (s[count] && s[count] != c)
+			count++;
+		strs[temp] = ft_substr(s, start, count - start);
+		if (!strs[temp])
 		{
-			spt[j] = (char *)malloc(sizeof(char) * (ft_cl(s, c) + 1));
-			if (spt[j] == NULL)
-				return (0);
-			while (*s && *s != c)
-				spt[j][i++] = (char)*s++;
-			spt[j][i] = '\0';
-			j++;
-			i = 0;
+			freesplit(temp, strs);
+			return (NULL);
 		}
+		temp++;
+		while (s[count] == c && c)
+			count++;
 	}
-	spt[j] = NULL;
-	return (1);
+	strs[temp] = NULL;
+	return (strs);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**spt;
+	char	**strs;
+	int		temp;
 
-	if (s == NULL)
+	if (!s)
 		return (NULL);
-	spt = (char **)malloc(sizeof(char *) * (ft_cr(s, c) + 1));
-	if (spt == NULL)
+	temp = 0;
+	strs = malloc((ft_countwords(s, c) + 1) * sizeof(char *));
+	if (!strs)
 		return (NULL);
-	if (ft_split_dop(s, spt, c) == 0)
-		return (is_free(spt));
-	return (spt);
+	if (!fillarr(s, strs, c))
+		return (NULL);
+	return (strs);
 }

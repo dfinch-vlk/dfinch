@@ -5,12 +5,12 @@
 # include <unistd.h>
 # include <stddef.h>
 
-int 	ft_strlen(char *str);
-char	*ft_strdup(char *s1);
-void	writing(char **line, char **pred, char *ost);
-int		ft_strnchr(char *str, char c);
-int 	write_pred(char **pred, char *buf);
-int		memory(char **line, char **pred);
+void	*ft_calloc(size_t count, size_t size);
+size_t	ft_strlen(const char *s);
+char	*ft_strchr(const char *s, int c);
+char	*ft_strdup(const char *s1);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*check_remains(char **remains, char **line);
 int		get_next_line(int fd, char **line);
-void	ft_bzero(void *s, size_t n);
+
 #endif
