@@ -1,37 +1,37 @@
 #include "get_next_line.h"
+#include <stdio.h>
 
-int	get_next_line_return(char *remains, int len_buf)
+void	get_next_line_if(char *pn, char **remains, char **line, int flag)
 {
-	if (len_buf < 0)
-		return (-1);
+	char	*clear;
+
+	*pn = 0;
+	if (flag == 1)
+		*line = ft_strdup(*remains);
+	clear = *remains;
+	*remains = ft_strdup(++pn);
+	free(clear);
+}
+
+int	get_next_line_return(int len_buf, char *remains)
+{
 	if (!len_buf && !ft_strlen(remains))
 		return (0);
-	return (1);
-}
-
-int	get_next_line_begin(char **buf, char **pn, char **line, char **remains)
-{
-	*buf = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
-	if (buf == NULL)
+	if (len_buf < 0)
 		return (-1);
-	*pn = check_remains(remains, line);
 	return (1);
 }
 
-char	*check_remains(char **remains, char **line)
+char	*get_next_line_dop(char **line, char **remains)
 {
 	char	*pn;
 
 	pn = NULL;
-	if (*remains)
+	if (remains[0])
 	{
-		if (ft_strchr(*remains, '\n'))
-		{
-			pn = ft_strchr(*remains, '\n');
-			*pn = 0;
-			*line = *remains;
-			*remains = ft_strdup(++pn);
-		}
+		pn = ft_strchr(*remains, '\n');
+		if (pn)
+			get_next_line_if(pn, remains, line, 1);
 		else
 		{
 			*line = *remains;
@@ -39,7 +39,10 @@ char	*check_remains(char **remains, char **line)
 		}
 	}
 	else
+	{
+		*line = ft_strdup("");
 		*remains = ft_strdup("");
+	}
 	return (pn);
 }
 
@@ -48,26 +51,30 @@ int	get_next_line(int fd, char **line)
 	static char	*remains;
 	char		*buf;
 	char		*pn;
-	int			len_buf;
 	char		*clear;
+	int			len_buf;
 
-	if (get_next_line_begin(&buf, &pn, line, &remains) < 0)
+	len_buf = 1;
+	if (fd < 0 || line == NULL)
 		return (-1);
+	buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	if (!buf)
+		return (-1);
+	pn = get_next_line_dop(line, &remains);
 	while (!pn)
 	{
 		len_buf = read(fd, buf, BUFFER_SIZE);
 		if (len_buf <= 0)
 			break ;
+		buf[len_buf] = 0;
 		pn = ft_strchr(buf, '\n');
 		if (pn)
-		{
-			*pn = 0;
-			remains = ft_strdup(++pn);
-		}
+			get_next_line_if(pn, &remains, line, 0);
 		clear = *line;
 		*line = ft_strjoin(*line, buf);
-		if (!clear)
-			free(clear);
+		if (!*line || len_buf < 0)
+			return (-1);
+		free(clear);
 	}
-	return (get_next_line_return(remains, len_buf));
+	return (get_next_line_return(len_buf, remains));
 }
