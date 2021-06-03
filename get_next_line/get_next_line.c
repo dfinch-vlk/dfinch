@@ -1,6 +1,14 @@
 #include "get_next_line.h"
 #include <stdio.h>
 
+int	get_next_line_return(char **buf, int len_buf, char *remains)
+{
+	free(*buf);
+	if (!len_buf && !ft_strlen(remains))
+		return (0);
+	return (1);
+}
+
 void	get_next_line_if(char *pn, char **remains, char **line, int flag)
 {
 	char	*clear;
@@ -16,9 +24,7 @@ void	get_next_line_if(char *pn, char **remains, char **line, int flag)
 char	*get_next_line_dop(char **line, char **remains)
 {
 	char	*pn;
-	char 	*clear;
 
-	clear = *line;
 	pn = NULL;
 	if (remains[0])
 	{
@@ -33,8 +39,18 @@ char	*get_next_line_dop(char **line, char **remains)
 	}
 	else
 		*line = ft_strdup("");
-	free(clear);
 	return (pn);
+}
+
+int	get_next_line_begin(int fd, int *len_buf, char **line, char **buf)
+{
+	*len_buf = 1;
+	if (read(fd, 0, 0) == -1 || !line || BUFFER_SIZE <= 0)
+		return (-1);
+	*buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	if (!*buf)
+		return (-1);
+	return (1);
 }
 
 int	get_next_line(int fd, char **line)
@@ -45,11 +61,7 @@ int	get_next_line(int fd, char **line)
 	char		*clear;
 	int			len_buf;
 
-	len_buf = 1;
-	if (read(fd, 0, 0) == -1 || !line || BUFFER_SIZE <= 0)
-		return (-1);
-	buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
-	if (!buf)
+	if (get_next_line_begin(fd, &len_buf, line, &buf) < 0)
 		return (-1);
 	pn = get_next_line_dop(line, &remains);
 	while (!pn)
@@ -67,7 +79,5 @@ int	get_next_line(int fd, char **line)
 			return (-1);
 		free(clear);
 	}
-	if (!len_buf && !ft_strlen(remains))
-		return (0);
-	return (1);
+	return (get_next_line_return(&buf, len_buf, remains));
 }
