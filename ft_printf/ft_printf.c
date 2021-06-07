@@ -115,7 +115,7 @@ char *add_str(char *s, int accuracy)
 		checkMinus = 1;
 	if (accuracy <= (ft_strlen(s) - checkMinus) || accuracy < 0)
 		return (s);
-	case_width = ft_malloc(sizeof(char) * accuracy + 1 + checkMinus, accuracy, 1);
+	case_width = ft_malloc(sizeof(char) * accuracy + 1 + (checkMinus * 2), accuracy, 1);
 	if (!case_width)
 		return (NULL);
 	if (checkMinus)
@@ -124,6 +124,7 @@ char *add_str(char *s, int accuracy)
 	count2 = accuracy - ft_strlen(s) + (checkMinus * 2);
 	while (s[count1])
 		case_width[count2++] = s[count1++];
+	case_width[count2] = 0;
 	free(s);
 	return (case_width);
 }
@@ -131,7 +132,7 @@ int ft_c(va_list args, int accuracy, int width, int *array)
 {
 	char *str;
 
-	if (accuracy > 0)
+	if (accuracy > 0 || accuracy == -1)
 		str = ft_strdup(" ");
 	else
 		str = ft_strdup("");
@@ -155,7 +156,7 @@ int ft_x(va_list args, int accuracy, int width, int *array)
 		int number;
 
 		number = va_arg(args, int);
-		return (ft_printf_args_next(width, add_str(ft_system((unsigned)number, 16, 2), accuracy), array[0]));
+		return (ft_printf_args_next(width, add_str(ft_system((unsigned)number, 16, 1), accuracy), array[0]));
 }
 
 int ft_X(va_list args, int accuracy, int width, int *array)
@@ -179,10 +180,20 @@ int ft_p(va_list args, int accuracy, int width, int *array)
 	return (number);
 }
 
+int ft_s(va_list args, int accuracy, int width, int *array)
+{
+	char *str;
+
+	str = va_arg(args, char *);
+	if (str == NULL)
+		str = ft_strdup("(null)");
+	return (ft_printf_args_next(width, acc_str(str, accuracy), array[0]));
+}
+
 int ft_printf_args(int width, int accuracy, int *array, va_list args)
 {
 	if (array[1] == 's')
-		return (ft_printf_args_next(width, acc_str(va_arg(args, char *), accuracy), array[0]));
+		return (ft_s(args, accuracy, width, array));
 	if (array[1] == 'c')
 		return (ft_c(args, accuracy, width, array));
 	if (array[1] == 'd' || array[1] == 'i')
@@ -258,16 +269,15 @@ int ft_printf(char *str, ...)
 		if (str[count] == '%')
 		{
 			p_arg = &str[count];
-			while(!conditions(str[count]))
-			{
+			while (!conditions(str[count]) && str[count] != 0)
 				count++;
-				if (str[count] == '\0')
-					return (len);
-			}
 			len = fr_printf_main(p_arg, args);
+			if (str[count] == 0)
+				return (len);
 			count++;
 		}
-		len += write(1, &str[count++], 1);
+		else
+			len += write(1, &str[count++], 1);
 	}
 	va_end(args);
 	return (len);

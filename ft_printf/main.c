@@ -3,6 +3,7 @@
 
 int main()
 {
-	ft_printf("%s %s", "hello", "world");
+	printf("%.0d", 0);
+	printf("%.d", 0);
 	return (0);
 }
