@@ -1,8 +1,8 @@
 #include "libftprintf.h"
 
-long	ft_system_mem(long n, long q)
+uint64_t	ft_system_mem(uint64_t n, uint64_t q)
 {
-	long	count;
+	uint64_t	count;
 
 	count = 0;
 	while (n >= q)
@@ -13,7 +13,7 @@ long	ft_system_mem(long n, long q)
 	return (++count);
 }
 
-char	condition_system(long n, long q, short flag)
+char	condition_system(uint64_t n, uint64_t q, short flag)
 {
 	if (((n % q) == 10 || n == 10) && flag == 1)
 		return ('a');
@@ -42,9 +42,9 @@ char	condition_system(long n, long q, short flag)
 	return (0);
 }
 
-long	ft_system_dop(char *first, long n, long q, long flag)
+uint64_t	ft_system_dop(char *first, uint64_t n, uint64_t q, uint64_t flag)
 {
-	long	count;
+	uint64_t	count;
 
 	count = 0;
 	while (n >= q)
@@ -65,12 +65,12 @@ long	ft_system_dop(char *first, long n, long q, long flag)
 	return (--count);
 }
 
-char	*ft_system(long n, long q, short flag)
+char	*ft_system(uint64_t n, uint64_t q, short flag)
 {
-	char	*first;
-	char	*result;
-	long		count;
-	long	i;
+	char		*first;
+	char		*result;
+	int			count;
+	uint64_t	i;
 
 	first = malloc(sizeof(char) * ft_system_mem(n, q) + 1);
 	if (!first)

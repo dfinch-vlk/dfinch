@@ -13,6 +13,11 @@ FILES = ft_atoi.c\
 		ft_strjoin.c\
 		ft_strlen.c\
 		ft_system.c\
+		ft_printf_part1.c\
+		ft_printf_part2.c\
+		ft_printf_part3.c\
+		ft_printf_part4.c\
+		ft_printf_part5.c\
 
 OBJS = $(FILES:%.c=%.o)
 

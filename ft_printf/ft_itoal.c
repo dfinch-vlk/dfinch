@@ -36,9 +36,9 @@ void	ft_itoal_dop(long int n, long int i, char *str)
 
 char	*ft_itoal(long int n)
 {
-	char			*str;
+	char				*str;
 	unsigned long int	size;
-	unsigned long int 	i;
+	unsigned long int	i;
 
 	i = 0;
 	size = get_sizel(n);
