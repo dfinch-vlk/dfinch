@@ -1,4 +1,4 @@
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {

@@ -1,4 +1,4 @@
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 int	ft_printf_main_if(int *width, int *count, int array, int arrow)
 {
@@ -37,16 +37,16 @@ void	ft_args3_dop(int count1, char *str, char *result)
 
 int	args_next_dop(int accuracy, char *case_width, char *str, int flag)
 {
-	if (flag == -3)
+	if (flag == -1 || flag == -4)
 	{
-		if (accuracy > ft_strlen(str))
+		if (accuracy > ft_strlen(str) && flag != -4)
 			return (ft_args2(case_width, str) + accuracy);
 		else
 			return (ft_args2(case_width, str));
 	}
 	else
 	{
-		if (accuracy > ft_strlen(str))
+		if (accuracy > ft_strlen(str) && flag != 5)
 			return (ft_args3(str, flag) + accuracy);
 		else
 			return (ft_args3(str, flag));

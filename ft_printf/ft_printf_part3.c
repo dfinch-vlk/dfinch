@@ -1,4 +1,4 @@
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 int	ft_args1(char *case_width, char *str, int width)
 {
@@ -53,7 +53,7 @@ int	ft_args3(char *str, int width)
 		result[count1++] = '-';
 	checkMinus = count1;
 	ft_args3_dop(count1, str, result);
-	count1 = ft_strlen(result) - checkMinus;
+	count1 = ft_strlen(result);
 	free(str);
 	free(result);
 	return (count1);
@@ -65,7 +65,7 @@ int	args_next(int width, char *str, int flag, int accuracy)
 	int		len;
 
 	len = 0;
-	if (flag == 2)
+	if (flag == 2 || flag == 5)
 		return (args_next_dop(accuracy, NULL, str, width));
 	if (width < ft_strlen(str))
 	{
@@ -76,15 +76,15 @@ int	args_next(int width, char *str, int flag, int accuracy)
 	case_width = ft_malloc(sizeof(char) * width + 1, width, 0);
 	if (!case_width)
 		return (-1);
-	if (flag == 3)
+	if (flag == 3 || flag == 6)
 	{
-		if (accuracy > ft_strlen(str))
+		if (accuracy > ft_strlen(str) && flag != 6)
 			return (ft_args1(case_width, str, width) + accuracy);
 		else
 			return (ft_args1(case_width, str, width));
 	}
 	else
-		return (args_next_dop(accuracy, case_width, str, -3));
+		return (args_next_dop(accuracy, case_width, str, flag * -1));
 }
 
 char	*acc_str(char *s, int accuracy)

@@ -1,4 +1,4 @@
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 char	*add_str(char *s, int accuracy)
 {
@@ -27,59 +27,36 @@ char	*add_str(char *s, int accuracy)
 	return (case_width);
 }
 
-int	ft_end(int width, int flag)
+int	ft_c(va_list args, int width, int *array)
 {
-	int		count;
-	int		check_end;
-	char	*case_width;
+	char c = va_arg(args, int);
+	char *case_width;
+	int len;
 
-	count = (check_end = 0);
+	len = 0;
+	if (width == 0)
+		return (write(1, &c, 1));
 	case_width = ft_malloc(width + 1, width, 0);
 	if (!case_width)
 		return (0);
-	if (flag != 1)
-		count++;
+	if (array[0] == 1)
+		len = (write(1, &c, 1) + my_putstr(&case_width[1]));
 	else
-		case_width[0] = 0;
-	while (check_end <= 2)
 	{
-		if (case_width[count] == 0)
-			check_end++;
-		if (check_end >= 2)
-			break ;
-		write(1, &case_width[count], 1);
-		count++;
+		case_width[ft_strlen(case_width) - 1] = c;
+		len = my_putstr(case_width);
+		if (c == 0)
+			len += write(1, &c, 1);
 	}
 	free(case_width);
-	return (count);
-}
-
-int	ft_c(va_list args, int accuracy, int width, int *array)
-{
-	char	*str;
-	char	c;
-
-	c = va_arg(args, int);
-	if ((accuracy >= 0 || accuracy == -1))
-	{
-		str = ft_strdup(" ");
-		str[0] = c;
-	}
-	else
-		str = ft_strdup("");
-	if (c == 0)
-	{
-		free(str);
-		return (ft_end(width, array[0]));
-	}
-	return (args_next(width, str, array[0], accuracy));
+	return (len);
 }
 
 int	ft_u(va_list args, int accuracy, int width, int *array)
 {
 	int	number;
 
-	if (accuracy > 0 && array[0] == 2)
+	if (accuracy >= 0 && array[0] == 2)
 		array[0] = 3;
 	number = va_arg(args, int);
 	if (accuracy == 0 && number == 0)

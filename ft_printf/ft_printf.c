@@ -1,11 +1,11 @@
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 int	ft_printf_args(int width, int accuracy, int *array, va_list args)
 {
 	if (array[1] == 's')
 		return (ft_s(args, accuracy, width, array));
 	if (array[1] == 'c')
-		return (ft_c(args, accuracy, width, array));
+		return (ft_c(args, width, array));
 	if (array[1] == 'd' || array[1] == 'i')
 		return (ft_id(args, accuracy, width, array));
 	if (array[1] == 'u')

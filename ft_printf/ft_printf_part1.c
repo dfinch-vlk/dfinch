@@ -1,4 +1,4 @@
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 int	ft_X(va_list args, int accuracy, int width, int *array)
 {
@@ -40,11 +40,18 @@ int	ft_p(va_list args, int accuracy, int width, int *array)
 int	ft_s(va_list args, int accuracy, int width, int *array)
 {
 	char	*str;
+	int len;
 
 	str = va_arg(args, char *);
 	if (str == NULL)
+	{
 		str = ft_strdup("(null)");
-	return (args_next(width, acc_str(str, accuracy), array[0], accuracy));
+		len = args_next(width, acc_str(str, accuracy), array[0], accuracy);
+		free(str);
+		return (len);
+	}
+	len = args_next(width, acc_str(str, accuracy), array[0] + 3, accuracy);
+	return (len);
 }
 
 int	ft_sc(int accuracy, int width, int *array)
