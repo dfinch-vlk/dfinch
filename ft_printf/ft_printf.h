@@ -1,11 +1,10 @@
-#ifndef LIBFTPRINTF_H
-# define LIBFTPRINTF_H
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
 # include <stdarg.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <inttypes.h>
-# include <stdio.h>
 
 int		ft_atoi(const char *str);
 int		ft_strlen(const char *s);
@@ -27,7 +26,6 @@ int		ft_X(va_list args, int accuracy, int width, int *array);
 int		ft_x(va_list args, int accuracy, int width, int *array);
 int		ft_u(va_list args, int accuracy, int width, int *array);
 int		ft_c(va_list args, int width, int *array);
-int		ft_end(int width, int flag);
 char	*add_str(char *s, int accuracy);
 char	*acc_str(char *s, int accuracy);
 int		args_next(int width, char *str, int flag, int accuracy);

@@ -40,7 +40,7 @@ int	ft_p(va_list args, int accuracy, int width, int *array)
 int	ft_s(va_list args, int accuracy, int width, int *array)
 {
 	char	*str;
-	int len;
+	int		len;
 
 	str = va_arg(args, char *);
 	if (str == NULL)

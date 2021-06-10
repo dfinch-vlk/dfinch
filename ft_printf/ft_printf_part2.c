@@ -29,10 +29,11 @@ char	*add_str(char *s, int accuracy)
 
 int	ft_c(va_list args, int width, int *array)
 {
-	char c = va_arg(args, int);
-	char *case_width;
-	int len;
+	char	c;
+	char	*case_width;
+	int		len;
 
+	c = va_arg(args, int);
 	len = 0;
 	if (width == 0)
 		return (write(1, &c, 1));
