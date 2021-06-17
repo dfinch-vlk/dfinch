@@ -1,5 +1,4 @@
 #include "server.h"
-#include <stdio.h>
 
 void	my_putstr(char c)
 {
