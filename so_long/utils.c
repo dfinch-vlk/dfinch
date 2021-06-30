@@ -1,8 +1,8 @@
 #include "so_long.h"
 
-int ft_strlen(const char *str)
+int	ft_strlen(const char *str)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	if (!str)
@@ -12,9 +12,9 @@ int ft_strlen(const char *str)
 	return (count);
 }
 
-int ft_strcmp(const char *s1, const char *s2)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	if (!s1 || !s2 || (ft_strlen(s1) != ft_strlen(s2)))

@@ -16,7 +16,8 @@ void	check_expansion(const char *file)
 	}
 }
 
-void	check_map_condition(t_long *so_long, char c, char **lines, t_counts *counts)
+void	check_map_condition(t_long *so_long, char c, \
+	char **lines, t_counts *counts)
 {
 	if (c == 'C')
 		so_long->count_coin++;
@@ -35,31 +36,32 @@ void	check_map(t_long *so_long, char **lines)
 	int			count1;
 	int			count2;
 
-	count2 = (counts.count_hero = (so_long->count_coin = (so_long->size = (counts.count_exit = 0))));
+	count2 = (counts.count_hero = (so_long->count_coin \
+		= (so_long->size = (counts.count_exit = 0))));
 	while (count2 < so_long->height)
 	{
 		count1 = 0;
 		so_long->size += ft_strlen(lines[count2]);
 		while (lines[count2][count1])
 		{
-			if ((count2 == 0 || count2 == so_long->height - 1) && lines[count2][count1] != '1')
+			if ((count2 == 0 || count2 == so_long->height - 1) \
+				&& lines[count2][count1] != '1')
 				error_map(lines);
-			if (lines[count2][0] != '1'  || lines[count2][ft_strlen(lines[count2]) - 1] != '1')
+			if (lines[count2][0] != '1' || \
+				lines[count2][ft_strlen(lines[count2]) - 1] != '1')
 				error_map(lines);
 			check_map_condition(so_long, lines[count2][count1], lines, &counts);
 			count1++;
 		}
 		count2++;
 	}
-	if (counts.count_hero != 1 || counts.count_exit != 1 || so_long->count_coin < 1)
-		error_map(lines);
-	check_map_continue(so_long, lines);
+	line_25_1(so_long, &counts, lines);
 }
 
-int count_line_func(int fd)
+int	count_line_func(int fd)
 {
-	char *buf;
-	int result;
+	char	*buf;
+	int		result;
 
 	result = 0;
 	buf = malloc(sizeof(char) * 2);
@@ -74,12 +76,12 @@ int count_line_func(int fd)
 	return (result);
 }
 
-void open_map(t_long *so_long, const char *file)
+void	open_map(t_long *so_long, const char *file)
 {
-	int fd;
-	char **lines;
-	int count;
-	char *line;
+	int		fd;
+	char	**lines;
+	int		count;
+	char	*line;
 
 	check_expansion(file);
 	count = 0;
