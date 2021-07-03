@@ -73,6 +73,7 @@ int	count_line_func(int fd)
 		if (buf[0] == '\n')
 			result++;
 	}
+	free(buf);
 	return (result);
 }
 

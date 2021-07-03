@@ -12,6 +12,9 @@ int	testing_move(int keycode, t_long *so_long)
 		move_down(so_long);
 	if (keycode == 0)
 		move_left(so_long);
+	if (keycode != 53 && keycode != 2 && keycode != 1 && \
+		keycode != 13 && keycode != 0)
+		return (1);
 	render(so_long);
 	return (1);
 }
@@ -19,7 +22,8 @@ int	testing_move(int keycode, t_long *so_long)
 int	ft_close(int keycode, t_long *so_long)
 {
 	(void)keycode;
-	exit_free(so_long);
+	(void)so_long;
+	exit(1);
 	return (1);
 }
 

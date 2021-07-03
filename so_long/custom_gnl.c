@@ -46,6 +46,9 @@ int	custom_gnl(int fd, char **line)
 	if (len_read < 0)
 		return (-1);
 	if (len_read == 0)
+	{
+		free(*line);
 		return (0);
+	}
 	return (1);
 }
