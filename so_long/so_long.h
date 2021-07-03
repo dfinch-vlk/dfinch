@@ -38,7 +38,7 @@ typedef struct s_counts
 	int	count_exit;
 }	t_counts;
 
-void	error_map(char **lines);
+void	error_map(char **lines, t_long *so_long);
 void	error_arg(void);
 void	open_map(t_long *so_long, const char *file);
 int		custom_gnl(int fd, char **line);
@@ -65,5 +65,6 @@ void	enemy_v(t_long *so_long);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_itoa(int n);
 void	line_25_1(t_long *so_long, t_counts *counts, char **lines);
+void	exit_free(t_long *so_long);
 
 #endif

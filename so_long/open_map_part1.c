@@ -10,7 +10,7 @@ void	check_expansion(const char *file)
 		if (file[count] == '.')
 		{
 			if (ft_strcmp(&file[count], ".ber") != 0)
-				error_map(NULL);
+				error_map(NULL, NULL);
 		}
 		count++;
 	}
@@ -27,7 +27,7 @@ void	check_map_condition(t_long *so_long, char c, \
 		counts->count_hero++;
 	if (c != 'V' && c != 'P' && c != 'G' && c != \
 		       	'C' && c != 'E' && c != '1' && c != '0')
-		error_map(lines);
+		error_map(lines, so_long);
 }
 
 void	check_map(t_long *so_long, char **lines)
@@ -46,10 +46,10 @@ void	check_map(t_long *so_long, char **lines)
 		{
 			if ((count2 == 0 || count2 == so_long->height - 1) \
 				&& lines[count2][count1] != '1')
-				error_map(lines);
+				error_map(lines, so_long);
 			if (lines[count2][0] != '1' || \
 				lines[count2][ft_strlen(lines[count2]) - 1] != '1')
-				error_map(lines);
+				error_map(lines, so_long);
 			check_map_condition(so_long, lines[count2][count1], lines, &counts);
 			count1++;
 		}
@@ -66,7 +66,7 @@ int	count_line_func(int fd)
 	result = 0;
 	buf = malloc(sizeof(char) * 2);
 	if (!buf)
-		error_map(NULL);
+		error_map(NULL, NULL);
 	buf[1] = 0;
 	while (read(fd, buf, 1))
 	{
@@ -87,13 +87,13 @@ void	open_map(t_long *so_long, const char *file)
 	count = 0;
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		error_map(NULL);
+		error_map(NULL, NULL);
 	so_long->height = count_line_func(fd);
 	if (so_long->height < 3)
-		error_map(NULL);
+		error_map(NULL, NULL);
 	lines = malloc(sizeof(char *) * so_long->height);
 	if (!lines)
-		error_map(NULL);
+		error_map(NULL, NULL);
 	close(fd);
 	fd = open(file, O_RDONLY);
 	while (custom_gnl(fd, &line))

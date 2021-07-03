@@ -46,10 +46,10 @@ void	write_coordinates(t_long *so_long, char **lines)
 				so_long->cords[count3][0] == 6)
 				enemy_cords(so_long, so_long->cords[count3][0], count3);
 			so_long->cords[count3][1] = count1 + 1;
-			so_long->cords[count3][2] = count2 + 1;
+			so_long->cords[count3++][2] = count2 + 1;
 			count1++;
-			count3++;
 		}
+		free(lines[count2]);
 		count2++;
 	}
 	free(lines);
@@ -63,7 +63,7 @@ void	check_map_continue(t_long *so_long, char **lines)
 	while (count + 1 < so_long->height)
 	{
 		if (ft_strlen(lines[count]) != ft_strlen(lines[count + 1]))
-			error_map(lines);
+			error_map(lines, so_long);
 		count++;
 	}
 	count = 0;

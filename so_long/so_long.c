@@ -3,7 +3,7 @@
 int	testing_move(int keycode, t_long *so_long)
 {
 	if (keycode == 53)
-		exit(1);
+		exit_free(so_long);
 	if (keycode == 2)
 		move_right(so_long);
 	if (keycode == 1)
@@ -19,8 +19,7 @@ int	testing_move(int keycode, t_long *so_long)
 int	ft_close(int keycode, t_long *so_long)
 {
 	(void)keycode;
-	(void)so_long;
-	exit(1);
+	exit_free(so_long);
 	return (1);
 }
 

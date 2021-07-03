@@ -44,12 +44,12 @@ void	this_exit(int x, int y, t_long *so_long)
 			&& so_long->cords[count][2] == y)
 		{
 			if (so_long->coin == so_long->count_coin)
-				exit(1);
+				exit_free(so_long);
 			return ;
 		}
 		if ((so_long->cords[count][0] == 5 || so_long->cords[count][0] == 6) && \
 			so_long->cords[count][1] == x && so_long->cords[count][2] == y)
-			exit (1);
+			exit_free(so_long);
 		count++;
 	}	
 }
