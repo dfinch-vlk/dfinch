@@ -4,10 +4,19 @@
 
 pthread_mutex_t mutex;
 
-void take_l(void)
+void take_l1(void)
 {
     pthread_mutex_lock(&mutex);
     printf("has taken a fork\n");
+    sleep(1);
+    pthread_mutex_unlock(&mutex);
+}
+
+void take_l2(void)
+{
+    pthread_mutex_lock(&mutex);
+    printf("has taken a fork\n");
+    sleep(1);
     pthread_mutex_unlock(&mutex);
 }
 
@@ -28,8 +37,8 @@ void sleeping(void)
 }
 
 void* helloWorld(void *args) {
-    take_l();
-    take_l();
+    take_l1();
+    take_l2();
     eating();
     sleeping();
     return ("hello");
