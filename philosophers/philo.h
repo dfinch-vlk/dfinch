@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tvachera <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/26 12:06:31 by tvachera          #+#    #+#             */
-/*   Updated: 2021/06/18 11:34:05 by tvachera         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef PHILO_H
 # define PHILO_H
 
@@ -47,20 +35,9 @@ typedef struct s_philo
 	pthread_t		thread;
 }	t_philo;
 
-/*
-**	main.c
-*/
 int				main(int argc, char **argv);
-
-/*
-** time.c
-*/
 size_t			get_time(void);
 void			ft_sleep(size_t ms);
-
-/*
-**	philo.c
-*/
 bool			check_death(t_philo *philos, unsigned int nb_philos);
 bool			check_meals(t_philo *philos, unsigned int nb_philos,
 					long nb_meals);
@@ -70,19 +47,11 @@ bool			watch_threads(t_pars *pars, t_philo *philos,
 					unsigned int nb_philos, pthread_mutex_t *forks);
 bool			launch_threads(t_pars *pars, pthread_mutex_t *forks,
 					pthread_mutex_t *print);
-
-/*
-**	check.c
-*/
 int				ft_strcmp(const char *s1, const char *s2);
 int				ft_strlen(char *str);
 bool			only_numbers(char *str);
 unsigned int	pars_nbr(char *nbr);
 bool			check_args(int argc, char **argv, t_pars *pars);
-
-/*
-**	forks.c
-*/
 void			unlock_forks(pthread_mutex_t *forks, unsigned int nb_philos);
 bool			take_forks(t_philo *philo, pthread_mutex_t *forkl,
 					pthread_mutex_t *forkr);
@@ -90,10 +59,6 @@ pthread_mutex_t	*init_forks(t_pars *pars);
 void			destroy_forks(pthread_mutex_t *forks, t_pars *pars);
 void			get_forks(t_philo *philo, size_t index, pthread_mutex_t *forks,
 					unsigned int nb_philo);
-
-/*
-**	lifetime.c
-*/
 unsigned long	get_ts(struct timeval ts);
 bool			is_dead(t_philo *philo);
 bool			fall_asleep(t_philo *philo);
