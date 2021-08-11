@@ -1,26 +1,45 @@
 #include "minishell.h"
 
-int count_shell()
+int	check_syn(void)
 {
-	int count;
-	int result;
-	char c;
+	int	count;
+
+	count = 0;
+	while (g_var.str[count + 2])
+	{
+		if ((g_var.str[count] == '>' || g_var.str[count] == '<') \
+			&& (g_var.str[count + 1] == '>' || g_var.str[count + 1] == '<') \
+			&& (g_var.str[count + 2] == '>' || g_var.str[count + 2] == '<'))
+		{
+			g_var.ret = 258;
+			return (printf("parse error near `<>'\n"));
+		}
+		count++;
+	}
+	return (0);
+}
+
+int	count_shell(void)
+{
+	int		count;
+	int		result;
+	char	c;
 
 	count = (result = 0);
-	while (var.str[count])
+	while (g_var.str[count])
 	{
-		if (var.str[count] == 39 || var.str[count] == 34)
+		if (g_var.str[count] == 39 || g_var.str[count] == 34)
 		{
-			c = var.str[count++];
-			while (var.str[count] != c && var.str[count])
+			c = g_var.str[count++];
+			while (g_var.str[count] != c && g_var.str[count])
 				count++;
 		}
-		if (var.str[count] == ';')
+		if (g_var.str[count] == '|')
 		{
 			count++;
-			while (var.str[count] == ' ' && var.str[count])
+			while (g_var.str[count] == ' ' && g_var.str[count])
 				count++;
-			if (var.str[count] == 0)
+			if (g_var.str[count] == 0)
 				break ;
 			result++;
 		}
@@ -29,69 +48,64 @@ int count_shell()
 	return (result + 1);
 }
 
-int check_parse_error()
+int	check_parse_error(void)
 {
-	int count;
+	int	count;
 
 	count = 0;
-	while (var.str[count + 1])
+	while (g_var.str[count + 1])
 	{
-		if (var.str[count] == ';' && var.str[count + 1] == ';')
-		{
-			var.ret = 258;
-			return (printf("shell: syntax error near unexpected token `;;'\n"));
-		}
-		if (var.str[count] == ';')
+		if (g_var.str[count] == '|' && g_var.str[count + 1] == '|')
+			g_var.ret = 258;
+		if (g_var.str[count] == '|')
 		{
 			count++;
-			while (var.str[count] == ' ' && var.str[count])
+			while (g_var.str[count] == ' ' && g_var.str[count])
 				count++;
-			if (var.str[count] == ';')
-			{
-				var.ret = 258;
-				return (printf("shell: syntax error near unexpected token `;'\n"));
-			}
-
+			if (g_var.str[count] == '|')
+				g_var.ret = 258;
 		}
 		count++;
 	}
 	return (0);
 }
 
-void freendom()
+void	freendom(void)
 {
-	int count1;
-	int count2;
+	int	count1;
+	int	count2;
 
 	count2 = 0;
-	while (count2 < var.len_shell)
+	while (count2 < g_var.len_shell)
 	{
 		count1 = 0;
-		while (count1 < var.shell[count2].len_arg)
+		while (count1 < g_var.shell[count2].len_arg)
 		{
-			free(var.shell[count2].arg[count1]);
+			free(g_var.shell[count2].arg[count1]);
 			count1++;
 		}
-		free(var.shell[count2].arg);
+		free(g_var.shell[count2].arg);
 		count2++;
 	}
-	free(var.shell);
+	free(g_var.shell);
 }
 
-void parsing(void)
+void	parsing(void)
 {
-	int count;
+	int	count;
 
 	count = 0;
-	if (check_parse_error())
+	if (check_parse_error() || check_syn())
+	{
+		freendom();
 		return ;
-	if (!(ft_strlen(var.str) - count_char(var.str, ' ')))
+	}
+	ft_add_space_for_redirect(&g_var.str);
+	if (!(ft_strlen(g_var.str) - count_char(g_var.str, ' ')))
 		return ;
-	var.shell = malloc(sizeof(t_shell) * (var.len_shell = count_shell()));
-	while (count < var.len_shell)
-	 	parsing_main(count++);
-	count = 0;
-	while (count < var.len_shell)
-		parsing_command(count++);
+	g_var.shell = malloc(sizeof(t_shell) * (g_var.len_shell = count_shell()));
+	while (count < g_var.len_shell)
+		parsing_main(count++);
+	ft_open_pipe();
 	freendom();
 }

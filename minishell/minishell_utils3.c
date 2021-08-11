@@ -1,11 +1,11 @@
 #include "minishell.h"
 
-void check_dup_var(char *s)
+void	check_dup_var(char *s)
 {
-	char *str;
-	int count;
+	char	*str;
+	int		count;
 
-	str = strdup(s);
+	str = ft_strdup(s);
 	count = 0;
 	while (str[count] != '=' && str[count])
 		count++;
@@ -14,6 +14,19 @@ void check_dup_var(char *s)
 		delite_var(str);
 	str[count] = '1';
 	free(str);
+}
+
+void	free_var(void)
+{
+	int	count;
+
+	count = 0;
+	while (count < g_var.len_vars)
+	{
+		free(g_var.vars[count]);
+		count++;
+	}
+	free(g_var.vars);
 }
 
 char	*ft_strjoin(char *s1, char *s2)
@@ -40,9 +53,9 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (result);
 }
 
-char *ft_strchr(char *str, char c)
+char	*ft_strchr(char *str, char c)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	while (str[count])

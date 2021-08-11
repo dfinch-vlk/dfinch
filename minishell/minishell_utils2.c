@@ -2,30 +2,54 @@
 
 void	exit_but(void)
 {
-	if (!ft_strlen(var.str))
+	if (!ft_strlen(g_var.str))
 	{
 		printf("\r                 ");
 		printf("\rminishell: exit\n");
-		free(var.str);
+		free(g_var.str);
+		free_var();
 		exit(0);
 	}
 	write(0, "  \b\b", 4);
 }
 
-int miss_space(void)
+int	miss_space(void)
 {
-	int count;
+	int	count;
 
 	count = 0;
-	while (var.str[count] == ' ')
+	while (g_var.str[count] == ' ')
 		count++;
 	return (count);
 }
 
-int clrscr(void) 
-{ 
-	printf("\033[2J");
-	printf("\033[0;0f");
-	printf("\n");	
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	while (n != 0)
+	{
+		if (*s1 != *s2)
+			return ((unsigned char)*s1 - (unsigned char)*s2);
+		else if (*s1 == '\0')
+			return (0);
+		s1++;
+		s2++;
+		n--;
+	}
+	return (0);
+}
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	int	count;
+
+	count = 0;
+	if (ft_strlen(s1) != ft_strlen(s2))
+		return (1);
+	while (s1[count])
+	{
+		if (s1[count] != s2[count])
+			return (1);
+		count++;
+	}
 	return (0);
 }

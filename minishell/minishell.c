@@ -1,51 +1,48 @@
 #include "minishell.h"
 
-void line_break(int code)
+void	line_break(int code)
 {
 	(void)code;
 	write(0, "\b\b  \b\b", 6);
 	write(0, "\nminishell: ", 12);
-	free(var.str);
-	var.str = new_line();
+	free(g_var.str);
+	g_var.str = new_line();
 }
 
-void line_slesh(int code)
+void	line_slesh(int code)
 {
 	(void)code;
 	write(0, "\b\b  \b\b", 6);
-	return ;
+	if (ft_strlen(g_var.str) > 0)
+		exit_but();
+	free(g_var.str);
+	g_var.str = new_line();
 }
 
 void	begin_main(void)
 {
 	signal(SIGINT, &line_break);
 	signal(SIGQUIT, &line_slesh);
-	var.str = new_line();
+	g_var.str = new_line();
 	writing_var();
 }
 
-int main(void)
+int	main(void)
 {
-	char buf[0];
-	
 	begin_main();
+	g_var.str = (char *) NULL;
 	while (1)
 	{
-		free(var.str);
-		var.str = new_line();
-		write(0, "minishell: ", 11);
-		while (1)
+		if (g_var.str)
 		{
-			if (!read(1, buf, 1))
-				exit_but();
-			else
-			{
-				if (buf[0] == '\n')
-					break ;
-				else
-					var.str = my_join(var.str, buf[0]);
-			}
+			free(g_var.str);
+			g_var.str = (char *) NULL;
 		}
+		g_var.str = readline("minishell: ");
+		if (!g_var.str)
+			exit_but();
+		if (g_var.str && *g_var.str)
+			add_history(g_var.str);
 		parsing();
 	}
 	return (0);

@@ -1,13 +1,15 @@
 NAME = minishell
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -lreadline
 RM = rm -f
 
 FILES = minishell.c \
 		minishell_utils1.c \
 		minishell_utils2.c \
 		minishell_utils3.c \
+		minishell_utils4.c \
+		minishell_utils5.c \
 		parsing_main.c \
 		parsing_one.c \
 		parsing_two.c \
@@ -19,14 +21,17 @@ FILES = minishell.c \
 		minishell_var_two.c \
 		parsing_command.c \
 		ft_itoa.c \
+		pipe.c \
+		define_fd_path.c \
+		parcing_redirect.c		
 
 OBJS = $(FILES:%.c=%.o)
 
 %.o: %.c minishell.h
-	$(CC) $(CFLAGS) -c $< -o $@ 
+	$(CC) -c $< -o $@ $(CFLAGS)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(OBJS) -o $(NAME) $(CFLAGS)
 
 all: $(NAME)
 
