@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script defer type="text/javascript" src="admin.js"></script>
+    <link rel="stylesheet" type="text/css" href="admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com"> 
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Kanban</title>
+  </head>
+  <body>
+    <div class="types">
+        <div id="exit"><p>Exit</p></div>
+        <div id="board"><p>Board</p></div>
+    </div>
+    <div class="displays">
+        <div class="display" id="tasks">
+            <h2>Tasks</h2>
+        </div>
+        <div class="display" id="logins">
+            <h2>Logins</h2>
+            <div id="type_add">
+                <input type="text" id="input_add">
+                <div id="button_add"><p>+</p></div>
+                <p id="add_login_error"></p>
+            </div>
+            <div id="type_delete">
+                <select id="delete_login">
+                </select>
+                <div id="delete_button"><p>-</p></div>
+            </div>
+        </div>
+        <div class="display" id="add_tasks">
+            <h2>Add new tasks</h2>
+            <input type="text" id="new_task_text">
+            <select size="1" id="new_task_login">
+            </select>
+            <select size="1" id="new_task_status">
+                <option value="1">Waiting</option>
+                <option value="2">In Progress</option>
+                <option value="3">Complete</option>
+            </select>
+            <div id="add_new_task"><p>+</p></div>
+            <p id="new_task_error"></p>
+        </div>
+    </div>
+  </body>
+</html>
