@@ -1,0 +1,26 @@
+.myFile {
+    display: flex;
+    align-items: center;
+    border-radius: 14px;
+    border: 1px black solid;
+    width: 200px;
+    height: 30px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.myFile p {
+    margin-right: 10px;
+}
+
+.myFile div {
+    border-radius: 100px;
+    border:2px green solid;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: green;
+    font-weight: 700;
+}
