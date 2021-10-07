@@ -95,6 +95,7 @@ body {
     height: 459px;
     background: white;
     border-radius: 14px;
+    overflow: auto;
 }
 
 #input__file {
@@ -197,6 +198,11 @@ h2 {
 }
 
 .button-card-main-page div img {
-    width: 20px;
-    height: 20px;
+    width: 19px;
+    height: 19px;
+}
+
+.link-card-file-main img {
+    width: 15px;
+    height: 15px;
 }

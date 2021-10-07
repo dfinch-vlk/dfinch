@@ -2,7 +2,7 @@ const mysql = require('mysql2');
 const conn = mysql.createConnection( {
     host: 'localhost',
     user: 'root',
-    database: 'VCloud',
+    database: 'Vcloud',
     password: '17776990',
     }
 );

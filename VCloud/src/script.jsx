@@ -27,29 +27,53 @@ class RegisterPage extends React.Component {
 }
 
 class MainPage extends React.Component {
+    
+    exit = () => {
+        deleteCookie('token');
+        downloadLoginPage();
+    };
+
+    addFile = () => {
+        fetch('/addFile', {
+            method: 'POST', 
+            headers: {
+                'Authorization': getCookie('token'),
+            },
+            body: new FormData(document.getElementById('form-main-page')),
+        }).then(() => {
+        downloadMainPage()
+        document.getElementById('input__file').value = null;
+        });
+    };
+
     render() {
         return (
             <div className="display-main-page">
             <div className="files-main-page">
                 <h2>Your files</h2>
-                <div className="card-file-main-page">
-                    <p className="name-card-file-main-page">test.txt</p>
-                    <div className="button-card-main-page">
-                        <div className="delete-card-file-main"><img src="delete.png" /></div>
-                        <div className="download-card-file-main"><img src="download.png" /></div>
-                        <div className="link-card-file-main"></div>
+                {
+                    this.props.info.map(function (item) {
+                        return (
+                    <div className="card-file-main-page" id_file={item.id} fileName={item.original}>
+                            <p className="name-card-file-main-page">{item.original}</p>
+                        <div className="button-card-main-page">
+                            <div className="delete-card-file-main" onClick={item.delete}><img src="delete.png" /></div>
+                            <div className="download-card-file-main" onClick={item.download}><img src="download.png" /></div>
+                        </div>
                     </div>
-                </div>
+                        );
+                    })
+                }
             </div>
             <div className="info-download-main-page">
                 <div className="info-main-page">
-                    <p id="info-login-main-page">Test</p>
-                    <div id="button-exit-main-page"><p className="button-exit-text-main-page">Exit</p></div>
+                    <p id="info-login-main-page">{this.props.login}</p>
+                    <div id="button-exit-main-page" onClick={this.exit}><p className="button-exit-text-main-page">Exit</p></div>
                 </div>
                 <div className="input_wrapper">
-                    <form>
-                        <input type="file" name="filedata" id="input__file" className="input input__file" />
-                        <label for="input__file">+</label>
+                    <form id="form-main-page">
+                        <input onChange={this.addFile} type="file" name="filedata" id="input__file" className="input input__file" />
+                        <label id="label" for="input__file">+</label>
                     </form>
                 </div>
             </div>
@@ -57,8 +81,6 @@ class MainPage extends React.Component {
         )
     }
 }
-
-deleteCookie('token');
 
 checkToken();
 
@@ -86,12 +108,38 @@ function checkToken(params) {
 }
 
 function  downloadMainPage() {
-    ReactDOM.render(<MainPage />, document.querySelector('body'), ()=> {
-        document.getElementById('button-exit-main-page').addEventListener('click', () => {
-            deleteCookie('token');
-            downloadLoginPage();
+    let login;
+    let token = getCookie('token');
+    fetch('/getLogin', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            'Authorization': token,
+        },
+    }).then(result => result.json())
+    .then(obj => {
+        login = obj.login;
+        fetch('/infoFiles', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': token,
+            },
+        }).then(result => result.json()).then(obj => {
+            console.log(obj);
+            for (let i = 0; i < obj.length; i++) {
+                obj[i].delete = deleteEvent;
+                obj[i].download = downloadFileEvent;
+            }
+            showMainPage(login, obj);
         })
-    });
+    })
+}
+
+function showMainPage(login, info) {
+    console.log(login);
+    console.log(info);
+    ReactDOM.render(<MainPage info={info} login={login}/>, document.querySelector('body'));
 }
 
 function sendSigin() {
@@ -123,7 +171,7 @@ function sendSigup() {
     if (checkValueLength(login.value.length, password.value.length))
         return ;
     fetch('/register', {
-        method: 'POST',
+    method: 'POST',
     headers: {
         'Content-Type': 'application/json;charset=utf-8',
     },
@@ -224,4 +272,45 @@ function showError(text) {
         err.innerHTML = '';
     }, 1300);
     return (1);
-} 
+}
+
+function deleteEvent(event) {
+    const id = event.target.closest('.card-file-main-page').getAttribute('id_file');
+    fetch('/deleteFile', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+        },
+        body: JSON.stringify({
+            id: id,
+        }),
+    }).then(result => {
+        downloadMainPage();
+    })
+}
+
+function downloadFileEvent(event) {
+    const id = event.target.closest('.card-file-main-page').getAttribute('id_file');
+    const fileName = event.target.closest('.card-file-main-page').getAttribute('fileName');
+    console.log('id: ', id, 'name: ', fileName);
+    fetch('/downloadFile', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            'ID': id,
+        },
+    })
+    .then(result => result.blob())
+    .then(blob => {
+        forceDownload(URL.createObjectURL(blob), fileName);
+    })
+}
+
+function forceDownload(blob, filename) {
+    let a = document.createElement('a');
+    a.download = filename;
+    a.href = blob;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
